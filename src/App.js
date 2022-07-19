@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import NFTContainer from "./components/NFTContainer";
 
 function App() {
+  const [walletAddress, setWalletAdress] = useState(null);
+  const [nfts, setNfts] = useState([]);
+
+  const connectWallet = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      setWalletAdress(accounts[0]);
+    }
+  };
+
+  const getNFTData = async () => {
+    if (!walletAddress) return;
+
+    const response = await fetch(
+      `https://api.rarible.org/v0.1/items/byOwner/?owner=ETHEREUM:${walletAddress}`
+    );
+
+    const data = await response.json();
+
+    debugger;
+
+    setNfts(data.items);
+  };
+
+  useEffect(() => {
+    getNFTData();
+  }, [walletAddress]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>Account: {walletAddress} </div>
+      <button onClick={connectWallet}>Connect Wallet</button>
+      <NFTContainer nfts={nfts} />
     </div>
   );
 }
