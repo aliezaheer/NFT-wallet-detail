@@ -3,7 +3,10 @@ import React from "react";
 const NFTCard = ({ nft }) => {
   return (
     <>
-      <img src={nft.meta.content[1].url} alt="NFT main image" />
+      <img
+        src={nft.meta.content[1].url}
+        alt="Beautiful NFT's coming from opensea"
+      />
       <div>Contract Address:</div>
       <div>{nft.contract}</div>
 

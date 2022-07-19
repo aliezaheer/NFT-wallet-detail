@@ -3,7 +3,7 @@ import NFTContainer from "./components/NFTContainer";
 
 function App() {
   const [walletAddress, setWalletAdress] = useState(null);
-  const [nfts, setNfts] = useState([]);
+  const [nfts, setNfts] = useState([getNFTData]);
 
   const connectWallet = async () => {
     if (typeof window.ethereum !== "undefined") {
